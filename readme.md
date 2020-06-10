@@ -1,6 +1,6 @@
-# Node API Lab
+# Connectar 
 
-> Social Network - Connectar 
+> Social Network for developers 
 
 ## Usage
 
