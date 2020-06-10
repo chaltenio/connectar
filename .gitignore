@@ -1,0 +1,6 @@
+node_modules/
+config/config.env
+config/temp.txt
+public/
+.vscode/settings.json
+_data/
