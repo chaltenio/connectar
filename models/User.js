@@ -2,6 +2,8 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const gravatar = require('gravatar');
+const normalize = require('normalize-url');
 
 const UserSchema = new mongoose.Schema({
     name: {
@@ -28,6 +30,9 @@ const UserSchema = new mongoose.Schema({
           minlength: 6,
           select: false
       },
+      avatar: {
+        type: String
+      },      
       resetPasswordToken: String,
       resetPasswordExpire: Date,
       createdAt: {
@@ -73,6 +78,20 @@ UserSchema.methods.getResetPasswordToken = function() {
     return resetToken;
     
 }
+
+// Get user gravatar
+UserSchema.pre('save', async function(next) {
+    const avatar = await normalize(
+        gravatar.url(this.email, {
+          s: '200',
+          r: 'pg',
+          d: 'mm'
+        }),
+        { forceHttps: true }
+    );
+
+    this.avatar = avatar;
+});
 
 
 module.exports = mongoose.model('User', UserSchema);
